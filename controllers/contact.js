@@ -1,10 +1,17 @@
 const asyncHandler = require("express-async-handler");
 const contactModel = require("../models/contact");
 
+// @desc Get all contacts
+// @route GET /api/contact
+// @access private
 const getAllContacts = asyncHandler(async (req, res) => {
   const contactAll = await contactModel.find({ createdBy: req.user.id });
   res.status(200).json(contactAll);
 });
+
+// @desc create new contact
+// @route POST /api/contact
+// access private
 
 const createContact = asyncHandler(async (req, res) => {
   const { name, email, phone } = req.body;
@@ -22,7 +29,9 @@ const createContact = asyncHandler(async (req, res) => {
     .status(201)
     .json({ msg: "new contact created successfully for", contact });
 });
-
+// @desc get contact by contact-ID
+// @route GET /api/contact/:id
+// @access private
 const getContact = asyncHandler(async (req, res) => {
   const contact = await contactModel.findById(req.params.id);
   if (!contact) {
@@ -37,6 +46,10 @@ const getContact = asyncHandler(async (req, res) => {
     .status(200)
     .json({ msg: `get contact for ID: ${req.params.id} is`, contact });
 });
+
+//@desc update contact
+//@route POST /api/contact/:id
+// @access private
 
 const updateContact = asyncHandler(async (req, res) => {
   const contact = await contactModel.findById(req.params.id);
@@ -58,7 +71,9 @@ const updateContact = asyncHandler(async (req, res) => {
     updateContact: updatedContact,
   });
 });
-
+// @desc Delete contact
+// @route /api/contact/:id
+// @access private
 const deleteContact = asyncHandler(async (req, res) => {
   const contact = await contactModel.findById(req.params.id);
   if (!contact) {
